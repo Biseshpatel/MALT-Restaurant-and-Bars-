@@ -284,13 +284,13 @@
           <!-- Dots -->
           <div id="aboutDots" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3">
             <button class="dot-btn group">
-              <span class="dot w-4 h-4 rounded-full bg-[#771200] block"></span>
+              <span class="dot w-3 h-3 rounded-full bg-[#771200] block"></span>
             </button>
             <button class="dot-btn group">
-              <span class="dot w-4 h-4 rounded-full bg-white block"></span>
+              <span class="dot w-3 h-3 rounded-full bg-white block"></span>
             </button>
             <button class="dot-btn group">
-              <span class="dot w-4 h-4 rounded-full bg-white block"></span>
+              <span class="dot w-3 h-3 rounded-full bg-white block"></span>
             </button>
           </div>
         </div>
@@ -799,7 +799,14 @@
 
 <!-- WhatsApp Redirect Script -->
 <script>
-  document.getElementById('reservation-form').addEventListener('submit', function (e) {
+  const reservationForm = document.getElementById('reservation-form');
+
+  // Reset form when the customer returns from WhatsApp
+  window.addEventListener('focus', function () {
+    reservationForm.reset();
+  });
+
+  reservationForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
     const name = document.getElementById("name").value.trim();
@@ -814,10 +821,26 @@
       return;
     }
 
-    const text = `Hello, I would like to reserve a table at Malt Restaurant:\nName: ${name}\nPhone: ${phone}\nDate: ${date}\nTime: ${time}\nGuests: ${guests}\nSpecial Requests: ${message || 'None'}`;
+    // ✅ Format time to 12-hour with AM/PM
+    let [hours, minutes] = time.split(':');
+    hours = parseInt(hours, 10);
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    const formattedTime = `${hours}:${minutes} ${ampm}`;
+
+    const text = `Hello, I would like to reserve a table at Malt Restaurant:
+Name: ${name}
+Phone: ${phone}
+Date: ${date}
+Time: ${formattedTime}
+Guests: ${guests}
+Special Requests: ${message || 'None'}`;
+
     const encoded = encodeURIComponent(text);
     const whatsappURL = `https://wa.me/9779802905854?text=${encoded}`;
-    window.open(whatsappURL, '_blank');
+
+    // ✅ Use direct navigation instead of pop-up to avoid block
+    window.location.href = whatsappURL;
   });
 </script>
 
@@ -842,11 +865,16 @@
             </div>
         </div>
         <div class="border-t border-white border-opacity-20 mt-12 pt-8 text-center text-sm text-white text-opacity-100">
-            <!-- FOOTER YEAR UPDATE -->
+
+            <!-- FOOTER area -->
             <p>&copy; 2025 MALT Restaurant and Bars. All rights reserved.</p>
-            <p class="mt-2">Designed with <i class="fas fa-heart text-[#ffffff]"></i> by Mr. Bisesh</p>
-        </div>
-    </div>
+            <p class="mt-2">
+                Designed with <i class="fas fa-heart text-[#ffffff]"></i> by
+                <a href="https://wa.me/9779701225504" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">Mr. Bisesh</a>
+            </p>
+</p>
+</div>
+</div>
 </footer>
 
     <!-- Scroll to Top Button -->
@@ -952,6 +980,41 @@
             }, 3000);
         });
     </script>
+
+    <!-- Swipe able testimonials-->
+     <script>
+  (function () {
+    const slider = document.getElementById('testimonial-slides');
+    let startX = 0;
+    let currentIndex = 0;
+    const slideCount = slider.children.length;
+
+    function updateSlider() {
+      const offset = -currentIndex * slider.offsetWidth;
+      slider.style.transform = `translateX(${offset}px)`;
+    }
+
+    slider.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+    });
+
+    slider.addEventListener('touchend', (e) => {
+      const endX = e.changedTouches[0].clientX;
+      const diff = startX - endX;
+
+      if (Math.abs(diff) > 50) {
+        if (diff > 0 && currentIndex < slideCount - 1) {
+          currentIndex++;
+        } else if (diff < 0 && currentIndex > 0) {
+          currentIndex--;
+        }
+        updateSlider();
+      }
+    });
+  })();
+</script>
+
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const sections = document.querySelectorAll("section[id]");
@@ -997,6 +1060,8 @@ document.addEventListener("DOMContentLoaded", function () {
   changeActiveLink();
 });
 </script>
+
+
 
 </body>
 </html>
