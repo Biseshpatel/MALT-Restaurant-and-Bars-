@@ -584,6 +584,41 @@
           class="flex transition-transform duration-500 ease-in-out"
           id="testimonial-slides"
         >
+          <!-- Clone of last slide (for infinite loop) -->
+          <div class="testimonial-slide min-w-full px-4">
+            <div class="bg-white p-8 rounded-lg shadow-md">
+              <div class="flex items-center mb-4">
+                <div class="flex text-yellow-400 mr-4">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="far fa-star"></i>
+                </div>
+                <span class="text-gray-500">2 months ago</span>
+              </div>
+              <p class="text-lg mb-6">
+                "The Tongba experience at Malt is authentic and wonderful. It's
+                rare to find this eastern specialty in Birgunj. The modern twist
+                on traditional Nepali dishes is innovative and delicious. Highly
+                Recommended!"
+              </p>
+              <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                  <img
+                    src="https://randomuser.me/api/portraits/men/75.jpg"
+                    alt="Rajan Sah"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <h4 class="font-bold">Rajan Sah</h4>
+                  <p class="text-gray-600">Radhemai</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Testimonial 1 -->
           <div class="testimonial-slide min-w-full px-4">
             <div class="bg-white p-8 rounded-lg shadow-md">
@@ -723,6 +758,41 @@
               </div>
             </div>
           </div>
+
+          <!-- Clone of first slide (for infinite loop) -->
+          <div class="testimonial-slide min-w-full px-4">
+            <div class="bg-white p-8 rounded-lg shadow-md">
+              <div class="flex items-center mb-4">
+                <div class="flex text-yellow-400 mr-4">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <span class="text-gray-500">2 weeks ago</span>
+              </div>
+              <p class="text-lg mb-6">
+                "Malt is hands down the best dining experience in Birgunj. The
+                Thakali Thali took me back to my childhood in Pokhara. The
+                ambiance is perfect for both family dinners and nights out with
+                friends."
+              </p>
+              <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                  <img
+                    src="https://randomuser.me/api/portraits/women/43.jpg"
+                    alt="Anita Shrestha"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <h4 class="font-bold">Anita Shrestha</h4>
+                  <p class="text-gray-600">Kathmandu</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -772,102 +842,104 @@ document.addEventListener("DOMContentLoaded", () => {
   const dots = document.querySelectorAll(".testimonial-dot");
   const prevButton = document.getElementById("testimonial-prev");
   const nextButton = document.getElementById("testimonial-next");
-  let currentSlide = 0;
+  const totalSlides = slides.length - 2; // because we added 2 clones
+  let currentIndex = 1; // start at first real slide
   let autoSlideInterval;
 
-  // Update slider position & dots
-  function showSlide(index) {
-    if (index >= slides.length) {
-      // reset quietly to first
-      currentSlide = 0;
-      slider.style.transition = "none";
-      slider.style.transform = `translateX(0px)`;
-      requestAnimationFrame(() => {
-        slider.style.transition = "transform 0.5s ease-in-out";
-      });
-    } else if (index < 0) {
-      // reset quietly to last
-      currentSlide = slides.length - 1;
-      const offset = -currentSlide * slider.offsetWidth;
-      slider.style.transition = "none";
-      slider.style.transform = `translateX(${offset}px)`;
-      requestAnimationFrame(() => {
-        slider.style.transition = "transform 0.5s ease-in-out";
-      });
-    } else {
-      currentSlide = index;
-      const offset = -currentSlide * slider.offsetWidth;
-      slider.style.transform = `translateX(${offset}px)`;
-    }
+  const updateSlider = () => {
+    const offset = -currentIndex * slider.offsetWidth;
+    slider.style.transform = `translateX(${offset}px)`;
 
+    // update dots
     dots.forEach((dot, i) => {
-      dot.classList.toggle("opacity-100", i === currentSlide);
-      dot.classList.toggle("w-4", i === currentSlide);
-      dot.classList.toggle("opacity-50", i !== currentSlide);
-      dot.classList.toggle("w-3", i !== currentSlide);
+      dot.classList.toggle("opacity-100", i === currentIndex - 1);
+      dot.classList.toggle("w-4", i === currentIndex - 1);
+      dot.classList.toggle("opacity-50", i !== currentIndex - 1);
+      dot.classList.toggle("w-3", i !== currentIndex - 1);
     });
-  }
+  };
 
-  // Auto-slide function
-  function startAutoSlide() {
-    autoSlideInterval = setInterval(() => {
-      showSlide(currentSlide + 1);
-    }, 3000);
-  }
+  const nextSlide = () => {
+    if (currentIndex >= totalSlides + 1) return;
+    currentIndex++;
+    slider.style.transition = "transform 0.4s ease-in-out";
+    updateSlider();
+  };
 
-  function stopAutoSlide() {
-    clearInterval(autoSlideInterval);
-  }
+  const prevSlide = () => {
+    if (currentIndex <= 0) return;
+    currentIndex--;
+    slider.style.transition = "transform 0.4s ease-in-out";
+    updateSlider();
+  };
 
-  // Button navigation
-  prevButton.addEventListener("click", () => {
-    showSlide(currentSlide - 1);
-    stopAutoSlide();
-    startAutoSlide();
+  // Reset when hitting clone
+  slider.addEventListener("transitionend", () => {
+    if (currentIndex === 0) {
+      slider.style.transition = "none";
+      currentIndex = totalSlides;
+      updateSlider();
+    }
+    if (currentIndex === totalSlides + 1) {
+      slider.style.transition = "none";
+      currentIndex = 1;
+      updateSlider();
+    }
   });
 
+  // Auto-slide
+  const startAutoSlide = () => {
+    autoSlideInterval = setInterval(nextSlide, 3000);
+  };
+  const stopAutoSlide = () => clearInterval(autoSlideInterval);
+
+  // Buttons
   nextButton.addEventListener("click", () => {
-    showSlide(currentSlide + 1);
+    nextSlide();
+    stopAutoSlide();
+    startAutoSlide();
+  });
+  prevButton.addEventListener("click", () => {
+    prevSlide();
     stopAutoSlide();
     startAutoSlide();
   });
 
-  // Dot navigation
-  dots.forEach((dot) => {
+  // Dots
+  dots.forEach((dot, i) => {
     dot.addEventListener("click", () => {
-      const index = parseInt(dot.getAttribute("data-index"));
-      showSlide(index);
+      currentIndex = i + 1;
+      slider.style.transition = "transform 0.4s ease-in-out";
+      updateSlider();
       stopAutoSlide();
       startAutoSlide();
     });
   });
 
-  // Swipe navigation
+  // Swipe
   let startX = 0;
   slider.addEventListener("touchstart", (e) => {
     startX = e.touches[0].clientX;
   });
-
   slider.addEventListener("touchend", (e) => {
-    const endX = e.changedTouches[0].clientX;
-    const diff = startX - endX;
-
+    const diff = startX - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 50) {
       if (diff > 0) {
-        showSlide(currentSlide + 1);
+        nextSlide();
       } else {
-        showSlide(currentSlide - 1);
+        prevSlide();
       }
       stopAutoSlide();
       startAutoSlide();
     }
   });
 
-  // Initialize
-  showSlide(0);
+  // Init
+  updateSlider();
   startAutoSlide();
 });
 </script>
+
 
 
 
