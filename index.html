@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
 
@@ -185,10 +185,12 @@
                 <a href="#about" class="block nav-link px-3 py-2 hover:bg-[#771200] hover:text-white">About Us</a>
                 <a href="#menu" class="block nav-link px-3 py-2 hover:bg-[#771200] hover:text-white">Menu</a>
                 <a href="#testimonials" class="block nav-link px-3 py-2 hover:bg-[#771200] hover:text-white">Testimonials</a>
-                <a href="#contact" class="block nav-link px-3 py-2 hover:bg-[#771200] hover:text-white">Contact</a>
-                <a href="https://wa.me/9779802905854" target="_blank" class="block nav-link px-3 py-2 bg-[#771200] text-white text-center mobile-reservation-btn whitespace-nowrap">
-                    Call For Reservation
-                </a>
+                <a href="#contact" class="block nav-link px-3 py-2 active:bg-[#771200] active:text-white">Contact</a>
+ <a href="https://wa.me/9779802905854?text=Hi%2C%20I%27d%20like%20to%20reserve%20a%20table."
+     target="_blank" rel="noopener"
+     class="block nav-link px-3 py-2 bg-[#771200] text-white text-center mobile-reservation-btn whitespace-nowrap">
+    Call For Reservation
+  </a>
             </div>
         </div>
     </nav>
@@ -333,6 +335,24 @@
     .dot {
       transition: background-color 0.3s ease;
     }
+      
+      /* Apply only on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  /* Neutralize generic hover states on typical interactive elements */
+  a:hover,
+  button:hover,
+  .nav-link:hover,
+  .hero-btn:hover,
+  #scroll-top:hover,
+  .mobile-menu a:hover {
+    background-color: inherit !important;
+    color: inherit !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+    border-color: inherit !important;
+  }
+}
+
   </style>
 
   <!-- JavaScript for Swipe, Dots & Auto-Slide -->
@@ -1231,4 +1251,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 </body>
+
 </html>
