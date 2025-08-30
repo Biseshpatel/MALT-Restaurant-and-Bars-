@@ -134,6 +134,13 @@
           text-decoration-color: var(--brand-primary);
           text-decoration-thickness: 2px;
         }
+          /* Disable hover effects on touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    [class*="hover:"]:hover {
+      all: unset !important;
+    }
+  }
+
     </style>
 </head>
 <body class="bg-brand-light">
@@ -252,7 +259,8 @@
                     <div class="text-3xl text-[#771200] font-bold mb-2">5★</div>
                     <p class="text-sm">Premium Experience</p>
                     <div class="mt-1">
-                        <i class="fas fa-crown text-yellow-400"></i>
+                        <i class="fas fa-crown text-yellow-400"></i></style>
+                    
                     </div>
                 </div>
             </div>
@@ -1242,4 +1250,5 @@ document.addEventListener("DOMContentLoaded", function () {
 </body>
 
 </html>
+
 
