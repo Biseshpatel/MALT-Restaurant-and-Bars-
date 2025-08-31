@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 
@@ -134,13 +134,6 @@
           text-decoration-color: var(--brand-primary);
           text-decoration-thickness: 2px;
         }
-          /* Disable hover effects on touch devices */
-  @media (hover: none) and (pointer: coarse) {
-    [class*="hover:"]:hover {
-      all: unset !important;
-    }
-  }
-
     </style>
 </head>
 <body class="bg-brand-light">
@@ -163,12 +156,16 @@
                         This navigation menu is visible only on screens 'lg' and above (laptop/desktop).
                         On mobile/tablet screens, it's hidden.
                     -->
-                    <a href="#home" class="nav-link hover:text-[#771200] transition font-medium">Home</a>
-                    <a href="#about" class="nav-link hover:text-[#771200] transition font-medium">About Us</a>
-                    <a href="#menu" class="nav-link hover:text-[#771200] transition font-medium">Menu</a>
-                    <a href="#testimonials" class="nav-link hover:text-[#771200] transition font-medium">Testimonials</a>
-                    <a href="#contact" class="nav-link hover:text-[#771200] transition font-medium">Contact</a>
-                    <a href="https://wa.me/9779802905854" target="_blank" class="bg-[#771200] hover:bg-[#5a0e00] text-white px-4 py-2 rounded-full font-medium transition">Call For Reservation</a>
+                       <a href="#home" class="nav-link md:hover:text-[#771200] active:text-[#771200] transition font-medium">Home</a>
+                       <a href="#about" class="nav-link md:hover:text-[#771200] active:text-[#771200] transition font-medium">About Us</a>
+                       <a href="#menu" class="nav-link md:hover:text-[#771200] active:text-[#771200] transition font-medium">Menu</a>
+                       <a href="#testimonials" class="nav-link md:hover:text-[#771200] active:text-[#771200] transition font-medium">Testimonials</a>
+                       <a href="#contact" class="nav-link md:hover:text-[#771200] active:text-[#771200] transition font-medium">Contact</a>
+                       <a href="https://wa.me/9779802905854?text=Hi%2C%20I%27d%20like%20to%20reserve%20a%20table."
+                       target="_blank" rel="noopener"
+                       class="bg-[#771200] md:hover:bg-[#5a0e00] active:bg-[#5a0e00] text-white px-4 py-2 rounded-full font-medium transition">
+                       Call For Reservation </a>
+
                 </div>
                 <!-- Hamburger (Mobile Menu Button) - Only visible on screens smaller than laptop (lg) -->
                 <div class="lg:hidden ml-2">
@@ -188,12 +185,12 @@
        <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden lg:hidden bg-white shadow-lg mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="#home" class="block nav-link px-3 py-2 hover:bg-[#771200] hover:text-white">Home</a>
-                <a href="#about" class="block nav-link px-3 py-2 hover:bg-[#771200] hover:text-white">About Us</a>
-                <a href="#menu" class="block nav-link px-3 py-2 hover:bg-[#771200] hover:text-white">Menu</a>
-                <a href="#testimonials" class="block nav-link px-3 py-2 hover:bg-[#771200] hover:text-white">Testimonials</a>
-                <a href="#contact" class="block nav-link px-3 py-2 hover:bg-[#771200] hover:text-white">Contact</a>
-                <a href="https://wa.me/9779802905854" target="_blank" class="block nav-link px-3 py-2 bg-[#771200] text-white text-center mobile-reservation-btn whitespace-nowrap">
+                <a href="#home" class="block nav-link px-3 py-2 md:hover:bg-[#771200] active:bg-[#771200] md:hover:text-white active:text-white">Home</a>
+                <a href="#about" class="block nav-link px-3 py-2 md:hover:bg-[#771200] active:bg-[#771200] md:hover:text-white active:text-white">About Us</a>
+                <a href="#menu" class="block nav-link px-3 py-2 md:hover:bg-[#771200] active:bg-[#771200] md:hover:text-white active:text-white">Menu</a>
+                <a href="#testimonials" class="block nav-link px-3 py-2 md:hover:bg-[#771200] active:bg-[#771200] md:hover:text-white active:text-white">Testimonials</a>
+                <a href="#contact" class="block nav-link px-3 py-2 md:hover:bg-[#771200] active:bg-[#771200] md:hover:text-white active:text-white">Contact</a>
+                <a href="https://wa.me/9779802905854" target="_blank" rel="noopener" class="block nav-link px-3 py-2 bg-[#771200] text-white text-center mobile-reservation-btn whitespace-nowrap">
                     Call For Reservation
                 </a>
             </div>
@@ -206,12 +203,12 @@
             <h1 class="text-4xl md:text-6xl font-bold mb-6">Welcome to MALT!</h1>
             <p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto">Experience the finest dining in Birgunj</p>
             <div class="w-full flex flex-col sm:flex-row justify-center items-center gap-4">
-                <a href="#menu" class="hero-btn bg-[#771200] hover:bg-[#5a0e00] text-white transition duration-300 flex items-center justify-center">
-                    <i class="fas fa-book-open mr-2"></i>View Menu
+                <a href="#menu" class="hero-btn bg-[#771200] md:hover:bg-[#5a0e00] active:bg-[#5a0e00] text-white transition duration-300 flex items-center justify-center">
+                  View Menu
                 </a>
-                <a href="#contact" target="_blank" class="hero-btn bg-white hover:bg-gray-100 text-[#771200] transition duration-300 flex items-center justify-center">
-                    <i class="fas fa-calendar-check mr-2"></i>Book a Table
-                </a>
+                <a href="#contact" class="hero-btn bg-white text-[#771200] md:hover:bg-gray-100 active:bg-gray-100 px-8 py-3 rounded-full text-lg font-medium border border-[#771200] transition duration-300 flex items-center justify-center">
+                  Book a Table
+</a>
             </div>
             <div class="mt-20 animate-bounce">
                 <a href="#about" class="text-white">
@@ -259,8 +256,7 @@
                     <div class="text-3xl text-[#771200] font-bold mb-2">5★</div>
                     <p class="text-sm">Premium Experience</p>
                     <div class="mt-1">
-                        <i class="fas fa-crown text-yellow-400"></i></style>
-                    
+                        <i class="fas fa-crown text-yellow-400"></i>
                     </div>
                 </div>
             </div>
@@ -341,7 +337,6 @@
     .dot {
       transition: background-color 0.3s ease;
     }
-
   </style>
 
   <!-- JavaScript for Swipe, Dots & Auto-Slide -->
@@ -414,7 +409,7 @@
                 <div class="w-20 h-1 bg-[#D4A373] mx-auto mb-8"></div>
                 <div class="flex flex-wrap justify-center gap-4 mb-12">
                     <button id="most-populars-btn" class="px-6 py-2 rounded-full bg-[#771200] text-white font-semibold">Most Populars</button>
-                    <a href="https://drive.google.com/file/d/1Hxuw-w3fyWBM2OjPDSyHOqpiRamORoaT/view?usp=sharing" target="_blank" class="px-6 py-2 rounded-full bg-white text-[#771200] border border-[#771200] hover:bg-[#771200] hover:text-white transition font-semibold">View Full Menu</a>
+                    <a href="https://drive.google.com/file/d/1Hxuw-w3fyWBM2OjPDSyHOqpiRamORoaT/view?usp=sharing" target="_blank" class="px-6 py-2 rounded-full bg-white text-[#771200] border border-[#771200] hover:bg-[#771200] md:hover:text-white active:text-white transition font-semibold">View Full Menu</a>
                 </div>
             </div>
             <div id="most-populars-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -809,14 +804,14 @@
       <button
         id="testimonial-prev"
         aria-label="Previous Testimonial"
-        class="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-4 bg-[#771200] text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#5a0e00] transition"
+        class="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-4 bg-[#771200] text-white w-10 h-10 rounded-full flex items-center justify-center md:hover:bg-[#5a0e00] active:bg-[#5a0e00] transition"
       >
         <i class="fas fa-chevron-left"></i>
       </button>
       <button
         id="testimonial-next"
         aria-label="Next Testimonial"
-        class="absolute right-0 top-1/2 transform -translate-y-1/2 -mr-4 bg-[#771200] text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#5a0e00] transition"
+        class="absolute right-0 top-1/2 transform -translate-y-1/2 -mr-4 bg-[#771200] text-white w-10 h-10 rounded-full flex items-center justify-center md:hover:bg-[#5a0e00] active:bg-[#5a0e00] transition"
       >
         <i class="fas fa-chevron-right"></i>
       </button>
@@ -1008,7 +1003,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <textarea id="message" rows="4" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary"></textarea>
             </div>
 
-            <button type="submit" class="w-full bg-[#771200] hover:bg-[#5a0e00] text-white font-bold py-3 px-6 rounded-full transition duration-300">
+            <button type="submit" class="w-full bg-[#771200] md:hover:bg-[#5a0e00] active:bg-[#5a0e00] text-white font-bold py-3 px-6 rounded-full transition duration-300">
               Book Table
             </button>
           </form>
@@ -1106,10 +1101,10 @@ Special Requests: ${message || 'None'}`;
             <div class="flex flex-col items-center">
                 <span class="mb-2 text-lg font-semibold">Follow us on:</span>
                 <div class="flex space-x-6 justify-center">
-                    <a href="https://www.facebook.com/Maltbrj/" target="_blank" class="hover:text-[#D4A373] transition">
+                    <a href="https://www.facebook.com/Maltbrj/" target="_blank" class="md:hover:text-[#D4A373] active:text-[#D4A373] transition">
                         <i class="fab fa-facebook-f fa-2x"></i>
                     </a>
-                    <a href="https://www.instagram.com/malt.restaurant/?hl=en" target="_blank" class="hover:text-[#D4A373] transition">
+                    <a href="https://www.instagram.com/malt.restaurant/?hl=en" target="_blank" class="md:hover:text-[#D4A373] active:text-[#D4A373] transition">
                         <i class="fab fa-instagram fa-2x"></i>
                     </a>
                 </div>
@@ -1129,7 +1124,7 @@ Special Requests: ${message || 'None'}`;
 </footer>
 
     <!-- Scroll to Top Button -->
-    <button id="scroll-top" class="scroll-top fixed bottom-8 right-8 w-12 h-12 bg-[#771200] text-white rounded-full flex items-center justify-center shadow-lg hover:bg-[#5a0e00] transition opacity-0">
+    <button id="scroll-top" class="scroll-top fixed bottom-8 right-8 w-12 h-12 bg-[#771200] text-white rounded-full flex items-center justify-center shadow-lg md:hover:bg-[#5a0e00] active:bg-[#5a0e00] transition opacity-0">
         <i class="fas fa-arrow-up"></i>
     </button>
 
@@ -1237,18 +1232,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-<script>
-  // Fix: remove "stuck hover" on mobile after tapping
-  document.addEventListener('touchend', function () {
-    if (document.activeElement && typeof document.activeElement.blur === 'function') {
-      document.activeElement.blur();
-    }
-  }, { passive: true });
-</script>
 
 
 </body>
-
 </html>
-
-
