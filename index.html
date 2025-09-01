@@ -263,7 +263,7 @@
         </div>
     </section>
 
-    <!-- About Section -->
+     <!-- About Section -->
 <section id="about" class="py-20 nepali-pattern">
   <div class="container mx-auto px-4">
     <!-- Section Header -->
@@ -340,67 +340,158 @@
   </style>
 
   <!-- JavaScript for Swipe, Dots & Auto-Slide -->
-  <script>
-    const aboutSlider = document.getElementById('aboutSlider');
-    const aboutDots = document.querySelectorAll('#aboutDots .dot');
-    const dotButtons = document.querySelectorAll('#aboutDots .dot-btn');
-    let aboutIndex = 0;
-    const aboutTotal = aboutDots.length;
-    let autoSlideInterval;
+  
+<script>
+/*
+  About slider – infinite loop with auto-slide, dots & swipe
+  Drop-in replacement for your existing About <script> block.
+*/
+(() => {
+  const slider = document.getElementById('aboutSlider');
+  const dots = Array.from(document.querySelectorAll('#aboutDots .dot'));
+  const dotBtns = Array.from(document.querySelectorAll('#aboutDots .dot-btn'));
 
-    function updateAboutSlider(index) {
-      aboutSlider.style.transform = `translateX(-${index * 100}%)`;
-      aboutDots.forEach((dot, i) => {
-        dot.classList.remove('bg-[#771200]', 'bg-white');
-        dot.classList.add(i === index ? 'bg-[#771200]' : 'bg-white');
+  // Keep a reference to the visible viewport (the rounded, overflow-hidden wrapper)
+  const viewport = slider.parentElement;
+
+  // Collect the real slides (before cloning)
+  const realSlides = Array.from(slider.children);
+  const realCount = realSlides.length;          // e.g., 3
+  if (realCount === 0) return;
+
+  // Clone first & last to enable seamless looping
+  const firstClone = realSlides[0].cloneNode(true);
+  const lastClone  = realSlides[realCount - 1].cloneNode(true);
+  slider.insertBefore(lastClone, realSlides[0]);
+  slider.appendChild(firstClone);
+
+  // State
+  let index = 1;                   // start on the first REAL slide (because we prepended a clone)
+  let isTransitioning = false;
+  let autoTimer = null;
+
+  // Ensure GPU acceleration & smoother transitions
+  slider.style.willChange = 'transform';
+
+  // Helpers
+  const slideWidth = () => viewport.clientWidth;
+
+  const setTransform = () => {
+    const x = -(index * slideWidth());
+    slider.style.transform = `translateX(${x}px)`;
+  };
+
+  const withoutTransition = (fn) => {
+    const prev = slider.style.transition;
+    slider.style.transition = 'none';
+    fn();
+    // force reflow so browser applies the no-transition transform immediately
+    void slider.offsetHeight;
+    // restore Tailwind's transition (class provides it, empty string clears inline override)
+    slider.style.transition = prev || '';
+  };
+
+  const updateDots = () => {
+    const active = ((index - 1) % realCount + realCount) % realCount; // normalize
+    dots.forEach((dot, i) => {
+      dot.classList.remove('bg-[#771200]', 'bg-white');
+      dot.classList.add(i === active ? 'bg-[#771200]' : 'bg-white');
+    });
+  };
+
+  const goTo = (targetIndex) => {
+    if (isTransitioning) return;
+    isTransitioning = true;
+    index = targetIndex;
+    updateDots();
+    setTransform();
+  };
+
+  const next = () => goTo(index + 1);
+  const prev = () => goTo(index - 1);
+
+  // Handle the seamless jump after reaching a clone
+  slider.addEventListener('transitionend', () => {
+    // At right end? (lastClone)
+    if (index === realCount + 1) {
+      withoutTransition(() => {
+        index = 1;           // snap back to first REAL slide
+        setTransform();
       });
     }
-
-    function nextSlide() {
-      aboutIndex = (aboutIndex + 1) % aboutTotal;
-      updateAboutSlider(aboutIndex);
-    }
-
-    dotButtons.forEach((btn, i) => {
-      btn.addEventListener('click', () => {
-        aboutIndex = i;
-        updateAboutSlider(aboutIndex);
-        resetAutoSlide();
+    // At left end? (firstClone)
+    if (index === 0) {
+      withoutTransition(() => {
+        index = realCount;   // snap to last REAL slide
+        setTransform();
       });
-    });
-
-    // Swipe Support
-    let startX = 0;
-    aboutSlider.addEventListener('touchstart', e => {
-      startX = e.touches[0].clientX;
-    });
-
-    aboutSlider.addEventListener('touchend', e => {
-      let endX = e.changedTouches[0].clientX;
-      if (startX > endX + 50) {
-        nextSlide();
-      } else if (startX < endX - 50) {
-        aboutIndex = (aboutIndex - 1 + aboutTotal) % aboutTotal;
-        updateAboutSlider(aboutIndex);
-      }
-      resetAutoSlide();
-    });
-
-    function startAutoSlide() {
-      autoSlideInterval = setInterval(nextSlide, 4000);
     }
+    isTransitioning = false;
+    updateDots();
+  });
 
-    function resetAutoSlide() {
-      clearInterval(autoSlideInterval);
-      startAutoSlide();
+  // Dot navigation (infinite feel: we jump to the matching REAL slide)
+  dotBtns.forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      goTo(i + 1);   // +1 because of the leading clone
+      resetAuto();
+    }, { passive: true });
+  });
+
+  // Swipe support
+  let startX = 0, dragging = false;
+  viewport.addEventListener('touchstart', (e) => {
+    dragging = true;
+    startX = e.touches[0].clientX;
+    resetAuto();
+  }, { passive: true });
+
+  viewport.addEventListener('touchmove', (e) => {
+    if (!dragging || isTransitioning) return;
+    // (Optional: could implement live dragging; keeping it simple & stable)
+  }, { passive: true });
+
+  viewport.addEventListener('touchend', (e) => {
+    if (!dragging) return;
+    dragging = false;
+    const dx = e.changedTouches[0].clientX - startX;
+    const threshold = 50; // px
+    if (dx < -threshold) next();
+    else if (dx > threshold) prev();
+    else {
+      // small swipe – snap back
+      setTransform();
+      isTransitioning = false;
+      updateDots();
     }
+    startAuto();
+  }, { passive: true });
 
-    // Initialize
-    updateAboutSlider(aboutIndex);
-    startAutoSlide();
-  </script>
+  // Auto-slide
+  const startAuto = () => {
+    stopAuto();
+    autoTimer = setInterval(next, 3000);
+  };
+  const stopAuto = () => {
+    if (autoTimer) clearInterval(autoTimer);
+    autoTimer = null;
+  };
+  const resetAuto = () => { stopAuto(); startAuto(); };
+
+  // Maintain correct offset on resize (no jump)
+  window.addEventListener('resize', () => {
+    withoutTransition(setTransform);
+  });
+
+  // Init: position on first REAL slide without animation, set dots, kick off auto-slide
+  withoutTransition(() => {
+    setTransform();
+    updateDots();
+  });
+  startAuto();
+})();
+</script>
 </section>
-
     <!-- Menu Section -->
     <section id="menu" class="py-20 bg-gray-50">
         <div class="container mx-auto px-4">
@@ -1237,3 +1328,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
+
